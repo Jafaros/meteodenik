@@ -1,77 +1,45 @@
 package cz.utb.meteodenik.cv04.prehled
 
-class MestoJ {
-    private var nazev: String? = null
-    private var teplota: Double? = null
+data class Mesto(val nazev: String, val teplota: Double)
 
-    fun getNazev(): String? {
-        return nazev
-    }
+fun Double.jakoCelsia(): String = "${this} C"
 
-    fun setNazev(nazev: String?) {
-        this.nazev = nazev
-    }
+fun Mesto.popis(): String = "$nazev: ${teplota.jakoCelsia()}"
 
-    fun getTeplota(): Double? {
-        return teplota
-    }
-
-    fun setTeplota(teplota: Double?) {
-        this.teplota = teplota
-    }
-
-    fun popis(): String {
-        if (nazev != null && teplota != null) {
-            return nazev!! + ": " + teplota!! + " C"
-        }
-        return "neznámé"
-    }
+sealed interface StavPrehledu {
+    data object Nacita : StavPrehledu
+    data object Chyba : StavPrehledu
+    data object Prazdno : StavPrehledu
+    data object Hotovo : StavPrehledu
 }
 
-class Prehled {
-    var nacita: Boolean = false
-    var chyba: Boolean = false
-    var prazdno: Boolean = false
-    var mesta: MutableList<MestoJ> = mutableListOf()
+class Prehled(private val mesta: List<Mesto>) {
+    private val stav: StavPrehledu = StavPrehledu.Hotovo;
 
-    fun textStavu(): String {
-        if (nacita) return "Načítám…"
-        if (chyba) return "Chyba"
-        if (prazdno) return "Nic tu není"
-        return "Měst: " + mesta.size
-    }
+    fun textStavu(): String = when (stav) {
+        StavPrehledu.Nacita -> "Načítám…"
+        StavPrehledu.Chyba -> "Chyba"
+        StavPrehledu.Prazdno -> "Nic tu není"
+        is StavPrehledu.Hotovo -> "Měst: ${mesta.size}" }
 
-    fun nejteplejsi(): MestoJ? {
-        var nej: MestoJ? = null
-        for (i in 0 until mesta.size) {
-            val m = mesta.get(i)
-            if (m.getTeplota() != null) {
-                if (nej == null) {
-                    nej = m
-                } else if (m.getTeplota()!! > nej.getTeplota()!!) {
-                    nej = m
-                }
-            }
-        }
-        return nej
-    }
+    fun nejteplejsi(): Mesto? = mesta.maxByOrNull { it.teplota }
 
     fun vypis() {
-        for (i in 0 until mesta.size) {
-            println(mesta.get(i).popis())
+        if (mesta.isEmpty()) {
+            return;
         }
+
+        mesta.forEach { println(it.popis()) }
         println(textStavu())
+
         val nej = nejteplejsi()
         if (nej != null) {
-            println("Nejtepleji: " + nej.getNazev() + " (" + nej.getTeplota() + " C)")
+            println("Nejtepleji: " + nej.nazev + " (" + nej.teplota + " C)")
         }
     }
 }
 
 fun main() {
-    val p = Prehled()
-    p.mesta.add(MestoJ().apply { setNazev("Zlín"); setTeplota(21.4) })
-    p.mesta.add(MestoJ().apply { setNazev("Brno"); setTeplota(23.0) })
-    p.mesta.add(MestoJ().apply { setNazev("Otrokovice"); setTeplota(20.9) })
+    val p = Prehled( listOf( Mesto("Zlín", 21.4), Mesto("Brno", 23.0), Mesto("Otrokovice", 20.9)))
     p.vypis()
 }
