@@ -12,4 +12,17 @@
     <string name="teplota_format">%1$.1f °C</string>
     <string name="teplota_chybi">Teplota není k dispozici</string>
     <string name="poslat_zpravu">Zapsat záznam</string>
+    <string name="poloha_zjistit">Zjistit polohu</string>
+    <string name="poloha_vysvetleni">Přibližnou polohu potřebujeme, abychom vám nabídli počasí ve městě, kde právě jste.</string>
+    <string name="poloha_pokracovat">Pokračovat</string>
+    <string name="poloha_povolena">Poloha je povolena</string>
+    <string name="poloha_bez_opravneni">Bez oprávnění k poloze vyberte město ručně, nebo polohu povolte v Nastavení.</string>
+    <string name="otevrit_nastaveni">Otevřít nastavení</string>
+    <string name="seznam_titulek_pocet">Moje města — %1$s</string>
+    <plurals name="pocet_zaznamu">
+        <item quantity="one">%1$d záznam</item>
+        <item quantity="few">%1$d záznamy</item>
+        <item quantity="many">%1$d záznamu</item>
+        <item quantity="other">%1$d záznamů</item>
+    </plurals>
 </resources>

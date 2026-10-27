@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MeteoDenik</string>
+    <string name="uvodni_text">Weather diary — Petr Grajciar</string>
+    <string name="text_po_kliknuti">Today it was 21 °C and clear.</string>
+    <string name="akce_zmen_text">Record today’s weather</string>
+    <string name="title_activity_detail_mesta">City details</string>
+    <string name="otevri_detail">Open city details</string>
+    <string name="mesto_nezname">Unknown city</string>
+    <string name="sdilet_zaznam">Share record</string>
+    <string name="sdileny_text">%1$s: %2$.1f °C — recorded in MeteoDenik</string>
+    <string name="sdileny_text_bez_teploty">%1$s: temperature unavailable — recorded in MeteoDenik</string>
+    <string name="teplota_format">%1$.1f °C</string>
+    <string name="teplota_chybi">Temperature unavailable</string>
+    <string name="poslat_zpravu">Save record</string>
+    <string name="poloha_zjistit">Find my location</string>
+    <string name="poloha_vysvetleni">We need your approximate location to offer you the weather in the city you are in right now.</string>
+    <string name="poloha_pokracovat">Continue</string>
+    <string name="poloha_povolena">Location is allowed</string>
+    <string name="poloha_bez_opravneni">Without location permission, pick the city yourself, or allow location in Settings.</string>
+    <string name="otevrit_nastaveni">Open settings</string>
+    <string name="seznam_titulek_pocet">My cities — %1$s</string>
+    <plurals name="pocet_zaznamu">
+        <item quantity="one">%1$d record</item>
+        <item quantity="other">%1$d records</item>
+    </plurals>
+</resources>
