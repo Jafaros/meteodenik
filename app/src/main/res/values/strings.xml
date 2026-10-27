@@ -10,6 +10,7 @@
     <string name="sdileny_text">%1$s: %2$.1f °C — zapsáno v MeteoDeníku</string>
     <string name="sdileny_text_bez_teploty">%1$s: teplota není k dispozici — zapsáno v MeteoDeníku</string>
     <string name="teplota_format">%1$.1f °C</string>
+    <string name="detail_souhrn">%1$s má právě %2$.1f °C</string>
     <string name="teplota_chybi">Teplota není k dispozici</string>
     <string name="poslat_zpravu">Zapsat záznam</string>
     <string name="poloha_zjistit">Zjistit polohu</string>

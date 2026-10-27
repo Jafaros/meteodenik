@@ -41,7 +41,7 @@ fun DetailObrazovka(mesto: String, teplota: Double) {
                 text = if (teplota.isNaN()) {
                     stringResource(R.string.teplota_chybi)
                 } else {
-                    stringResource(R.string.teplota_format, teplota)
+                    stringResource(R.string.detail_souhrn, mesto, teplota)
                 }
             )
             SdiletTlacitko(mesto = mesto, teplota = teplota)

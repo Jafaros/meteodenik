@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MeteoDenik</string>
+    <string name="app_name">Weather Diary</string>
     <string name="uvodni_text">Weather diary — Petr Grajciar</string>
     <string name="text_po_kliknuti">Today it was 21 °C and clear.</string>
     <string name="akce_zmen_text">Record today’s weather</string>
@@ -11,6 +11,7 @@
     <string name="sdileny_text">%1$s: %2$.1f °C — recorded in MeteoDenik</string>
     <string name="sdileny_text_bez_teploty">%1$s: temperature unavailable — recorded in MeteoDenik</string>
     <string name="teplota_format">%1$.1f °C</string>
+    <string name="detail_souhrn">%1$s is currently at %2$.1f °C</string>
     <string name="teplota_chybi">Temperature unavailable</string>
     <string name="poslat_zpravu">Save record</string>
     <string name="poloha_zjistit">Find my location</string>
