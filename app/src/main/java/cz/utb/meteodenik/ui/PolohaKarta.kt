@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -19,11 +21,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,14 +48,20 @@ fun PolohaKarta(onPolohaPovolena: () -> Unit) {
     val context = LocalContext.current
     val activity = context.najdiAktivitu()
 
-    var stav by remember {
+    var stav by rememberSaveable {
         mutableStateOf(
             if (ContextCompat.checkSelfPermission(context, OPRAVNENI_POLOHA)
                 == PackageManager.PERMISSION_GRANTED
             ) StavOpravneni.UDELENO else StavOpravneni.NEZNAMY
         )
     }
-    var zobrazitVysvetleni by remember { mutableStateOf(false) }
+    var zobrazitVysvetleni by rememberSaveable { mutableStateOf(false) }
+
+    var poloha by remember { mutableStateOf<Location?>(null) }
+
+    LaunchedEffect(stav) {
+        poloha = if (stav == StavOpravneni.UDELENO) context.posledniPoloha() else null
+    }
 
     val spoustec = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -74,6 +84,7 @@ fun PolohaKarta(onPolohaPovolena: () -> Unit) {
             if (udalost == Lifecycle.Event.ON_RESUME) {
                 val povoleno = ContextCompat.checkSelfPermission(context, OPRAVNENI_POLOHA) ==
                     PackageManager.PERMISSION_GRANTED
+                poloha = if (povoleno) context.posledniPoloha() else null
                 if (povoleno && stav != StavOpravneni.UDELENO) {
                     stav = StavOpravneni.UDELENO
                     zobrazitVysvetleni = false
@@ -89,8 +100,21 @@ fun PolohaKarta(onPolohaPovolena: () -> Unit) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         when (stav) {
-            StavOpravneni.UDELENO ->
+            StavOpravneni.UDELENO -> {
                 Text(stringResource(R.string.poloha_povolena))
+                val aktualniPoloha = poloha
+                Text(
+                    text = if (aktualniPoloha == null) {
+                        stringResource(R.string.poloha_nedostupna)
+                    } else {
+                        stringResource(
+                            R.string.poloha_souradnice,
+                            aktualniPoloha.latitude,
+                            aktualniPoloha.longitude
+                        )
+                    }
+                )
+            }
 
             StavOpravneni.ODMITNUTO_NATRVALO -> {
                 Text(
@@ -132,4 +156,18 @@ private tailrec fun Context.najdiAktivitu(): Activity? = when (this) {
     is Activity -> this
     is ContextWrapper -> baseContext.najdiAktivitu()
     else -> null
+}
+
+// Oprávnění se může změnit i mezi kontrolou a voláním systémového API.
+private fun Context.posledniPoloha(): Location? {
+    if (ContextCompat.checkSelfPermission(this, OPRAVNENI_POLOHA) !=
+        PackageManager.PERMISSION_GRANTED
+    ) return null
+
+    return try {
+        getSystemService(LocationManager::class.java)
+            ?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+    } catch (e: SecurityException) {
+        null
+    }
 }

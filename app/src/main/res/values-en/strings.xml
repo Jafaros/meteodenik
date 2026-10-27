@@ -15,14 +15,16 @@
     <string name="teplota_chybi">Temperature unavailable</string>
     <string name="poslat_zpravu">Save record</string>
     <string name="poloha_zjistit">Find my location</string>
-    <string name="poloha_vysvetleni">We need your approximate location to offer you the weather in the city you are in right now.</string>
+    <string name="poloha_vysvetleni">We use your approximate location to offer weather for a nearby city so you do not have to find it in the list. We do not need your exact address.</string>
     <string name="poloha_pokracovat">Continue</string>
     <string name="poloha_povolena">Location is allowed</string>
-    <string name="poloha_bez_opravneni">Without location permission, pick the city yourself, or allow location in Settings.</string>
+    <string name="poloha_bez_opravneni">The system will not ask again. You can still select cities and share records without location access. You can allow location in Settings.</string>
     <string name="otevrit_nastaveni">Open settings</string>
     <string name="seznam_titulek_pocet">My cities — %1$s</string>
     <plurals name="pocet_zaznamu">
         <item quantity="one">%1$d record</item>
         <item quantity="other">%1$d records</item>
     </plurals>
+    <string name="poloha_nedostupna">Location is not available yet. You can select a city manually.</string>
+    <string name="poloha_souradnice">Latitude: %1$.4f; longitude: %2$.4f</string>
 </resources>

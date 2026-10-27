@@ -14,10 +14,10 @@
     <string name="teplota_chybi">Teplota není k dispozici</string>
     <string name="poslat_zpravu">Zapsat záznam</string>
     <string name="poloha_zjistit">Zjistit polohu</string>
-    <string name="poloha_vysvetleni">Přibližnou polohu potřebujeme, abychom vám nabídli počasí ve městě, kde právě jste.</string>
+    <string name="poloha_vysvetleni">Podle přibližné polohy vám nabídneme počasí pro okolní město, abyste ho nemuseli hledat v seznamu. Přesnou adresu nepotřebujeme.</string>
     <string name="poloha_pokracovat">Pokračovat</string>
     <string name="poloha_povolena">Poloha je povolena</string>
-    <string name="poloha_bez_opravneni">Bez oprávnění k poloze vyberte město ručně, nebo polohu povolte v Nastavení.</string>
+    <string name="poloha_bez_opravneni">Systém se už nezeptá. Bez přístupu k poloze můžete dál vybírat města a sdílet záznamy. Polohu můžete povolit v Nastavení.</string>
     <string name="otevrit_nastaveni">Otevřít nastavení</string>
     <string name="seznam_titulek_pocet">Moje města — %1$s</string>
     <plurals name="pocet_zaznamu">
@@ -26,4 +26,6 @@
         <item quantity="many">%1$d záznamu</item>
         <item quantity="other">%1$d záznamů</item>
     </plurals>
+    <string name="poloha_nedostupna">Poloha zatím není dostupná. Město můžete vybrat ručně.</string>
+    <string name="poloha_souradnice">Zeměpisná šířka: %1$.4f; délka: %2$.4f</string>
 </resources>
