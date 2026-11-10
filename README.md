@@ -25,3 +25,9 @@ Ověření (příkaz na jednom řádku):
 
 Ověřováno na dostupném emulátoru Medium_Phone s API 37 (Android 17);
 emulátor s API 36 uvedený v lekci zde není nainstalovaný.
+
+Protokol rotace, smrti procesu a kontrolního pokusu je v
+[docs/lekce-08-stav.md](docs/lekce-08-stav.md). Prošla kontrola sestavení, lint
+bez chyb, jednotkový test a všech 11 instrumentovaných testů. Detail zobrazuje
+lokalizovanou teplotu i stav neexistujícího města; náhledy pokrývají také tmavý
+režim a zvětšené písmo.

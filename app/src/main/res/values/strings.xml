@@ -27,4 +27,5 @@
     </plurals>
     <string name="zpet">Zpět</string>
     <string name="mesto_nezname">Město nebylo nalezeno.</string>
+    <string name="teplota_format">%1$.1f °C</string>
 </resources>

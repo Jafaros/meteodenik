@@ -13,6 +13,10 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.doubleClick
+import androidx.compose.ui.test.assertIsSelected
+import androidx.test.espresso.Espresso
 import android.content.pm.ActivityInfo
 import android.os.ParcelFileDescriptor
 import org.junit.Assert.assertFalse
@@ -108,5 +112,52 @@ class MestaObrazovkaTest {
         compose.onNodeWithContentDescription(
             compose.activity.getString(R.string.vizitka_email_popis, text(R.string.vizitka_email))
         ).assertIsDisplayed()
+    }
+
+    @Test
+    fun detailBrnaPrezijeRotaciAZpetObnoviSeznam() {
+        compose.onNodeWithText(text(R.string.mesto_pole_label)).performTextReplacement("Koncept")
+        compose.onNodeWithText("Brno").performClick()
+        compose.onNodeWithText(text(R.string.zpet)).assertIsDisplayed()
+        val teplota = compose.activity.getString(R.string.teplota_format, 21.0)
+        compose.onNodeWithText(teplota).assertIsDisplayed()
+        val puvodniAktivita = compose.activity
+        compose.activityRule.scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+        compose.waitUntil(10_000) { compose.activity !== puvodniAktivita }
+        compose.waitForIdle()
+        compose.onNodeWithText("Brno").assertIsDisplayed()
+        compose.onNodeWithText(teplota).assertIsDisplayed()
+        compose.onNodeWithText(text(R.string.zpet)).performClick()
+        compose.onNodeWithText(text(R.string.mesta_titulek)).assertIsDisplayed()
+        compose.onNodeWithText("Koncept").assertIsDisplayed()
+        compose.onNodeWithText("Brno").assertIsSelected()
+        compose.activityRule.scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }
+    }
+
+    @Test
+    fun dvojklikNevloziDvaDetailyASystemoveZpetVratiSeznam() {
+        compose.onNodeWithText("Brno").performTouchInput { doubleClick() }
+        compose.onNodeWithText(text(R.string.zpet)).assertIsDisplayed()
+        Espresso.pressBack()
+        compose.onNodeWithText(text(R.string.mesta_titulek)).assertIsDisplayed()
+        compose.onNodeWithText(pocet(3)).assertIsDisplayed()
+    }
+
+    @Test
+    fun detailNovehoMestaPouzivaStejnyZdrojJakoSeznam() {
+        compose.onNodeWithText(text(R.string.mesto_pole_label)).performTextReplacement("Jihlava")
+        compose.onNodeWithText(text(R.string.mesto_pridat)).performClick()
+        compose.onNodeWithTag("mesta_seznam").performScrollToNode(hasText("Jihlava"))
+        compose.onNodeWithText("Jihlava").performClick()
+        compose.onNodeWithText("Jihlava").assertIsDisplayed()
+        compose.onNodeWithText(text(R.string.mesto_teplota_neznama)).assertIsDisplayed()
+        compose.onNodeWithText(text(R.string.zpet)).performClick()
+        compose.onNodeWithContentDescription(
+            compose.activity.getString(R.string.mesto_smazat_popis, "Jihlava")
+        ).performScrollTo().performClick()
     }
 }
