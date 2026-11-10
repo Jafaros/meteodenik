@@ -14,4 +14,11 @@
     <string name="vizitka_obor">Mobile technologies · TBU</string>
     <string name="vizitka_email_popis">Email: %1$s</string>
     <string name="vizitka_avatar_popis">Avatar: %1$s</string>
+    <string name="mesto_duplikat">A city with this name is already in the list.</string>
+    <string name="mesto_smazat">Delete</string>
+    <string name="mesto_smazat_popis">Delete city %1$s</string>
+    <plurals name="mesta_pocet">
+        <item quantity="one">%1$d city</item>
+        <item quantity="other">%1$d cities</item>
+    </plurals>
 </resources>
