@@ -25,4 +25,6 @@
         <item quantity="many">%1$d města</item>
         <item quantity="other">%1$d měst</item>
     </plurals>
+    <string name="zpet">Zpět</string>
+    <string name="mesto_nezname">Město nebylo nalezeno.</string>
 </resources>

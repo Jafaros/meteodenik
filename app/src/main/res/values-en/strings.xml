@@ -21,4 +21,6 @@
         <item quantity="one">%1$d city</item>
         <item quantity="other">%1$d cities</item>
     </plurals>
+    <string name="zpet">Back</string>
+    <string name="mesto_nezname">City not found.</string>
 </resources>
