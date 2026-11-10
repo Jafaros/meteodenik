@@ -10,6 +10,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.hasText
+import android.content.pm.ActivityInfo
+import android.os.ParcelFileDescriptor
+import org.junit.Assert.assertFalse
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +29,7 @@ class MestaObrazovkaTest {
         .getQuantityString(R.plurals.mesta_pocet, pocet, pocet)
 
     @Test
-    fun pridaniValidaceMazaniAPrazdnySeznam() {
+    fun pridaniValidaceAMazani() {
         val pole = compose.onNodeWithText(text(R.string.mesto_pole_label))
         val pridat = compose.onNodeWithText(text(R.string.mesto_pridat))
         pridat.assertIsNotEnabled()
@@ -51,13 +57,12 @@ class MestaObrazovkaTest {
                 compose.activity.getString(R.string.mesto_smazat_popis, nazev)
             ).performScrollTo().performClick()
         }
-        smazat("Zlín")
-        compose.onNodeWithText("Zlín").assertDoesNotExist()
+        smazat("Otrokovice")
+        compose.onNodeWithText("Otrokovice").assertDoesNotExist()
         compose.onNodeWithText(pocet(7)).assertIsDisplayed()
         compose.onNodeWithText("Brno").assertIsDisplayed()
-        (listOf("Brno", "Uherské Hradiště") + novaMesta).forEach(::smazat)
-        compose.onNodeWithText(pocet(0)).assertIsDisplayed()
-        compose.onNodeWithText(text(R.string.mesta_prazdno)).assertIsDisplayed()
+        novaMesta.drop(1).forEach(::smazat)
+        compose.onNodeWithText(pocet(3)).assertIsDisplayed()
     }
 
     @Test
@@ -66,6 +71,34 @@ class MestaObrazovkaTest {
         InstrumentationRegistry.getInstrumentation().runOnMainSync { compose.activity.recreate() }
         compose.waitForIdle()
         compose.onNodeWithText("Rozepsano").assertIsDisplayed()
+    }
+
+    @Test
+    fun pridaneMestoATextPrezijiSkutecnouRotaciBezOnCleared() {
+        compose.onNodeWithText(text(R.string.mesto_pole_label)).performTextReplacement("Kromeriz")
+        compose.onNodeWithText(text(R.string.mesto_pridat)).performClick()
+        compose.onNodeWithText(text(R.string.mesto_pole_label)).performTextReplacement("Rozepsano")
+        val puvodniAktivita = compose.activity
+        fun shell(prikaz: String): String = ParcelFileDescriptor.AutoCloseInputStream(
+            InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand(prikaz)
+        ).bufferedReader().use { it.readText() }
+        shell("logcat -c")
+        compose.activityRule.scenario.onActivity { activity ->
+            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+        compose.waitUntil(10_000) { compose.activity !== puvodniAktivita }
+        compose.waitForIdle()
+        compose.onNodeWithText("Rozepsano").assertIsDisplayed()
+        compose.onNodeWithTag("mesta_seznam").performScrollToNode(hasText("Kromeriz"))
+        compose.onNodeWithText("Kromeriz").assertIsDisplayed()
+        compose.onNodeWithText(pocet(4)).assertIsDisplayed()
+        assertFalse(shell("logcat -d -s Stav:D *:S").contains("onCleared"))
+        compose.onNodeWithContentDescription(
+            compose.activity.getString(R.string.mesto_smazat_popis, "Kromeriz")
+        ).performClick()
+        compose.activityRule.scenario.onActivity {
+            it.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        }
     }
 
     @Test

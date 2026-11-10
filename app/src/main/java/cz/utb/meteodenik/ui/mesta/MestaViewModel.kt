@@ -1,5 +1,6 @@
 package cz.utb.meteodenik.ui.mesta
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -50,5 +51,10 @@ class MestaViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel
         if (savedStateHandle.get<Int?>(KLIC_VYBRANE_MESTO) == id) {
             savedStateHandle[KLIC_VYBRANE_MESTO] = null
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("Stav", "onCleared") // Měřák cvičení 8.1: při rotaci se nesmí vypsat.
     }
 }

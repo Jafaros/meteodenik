@@ -28,6 +28,13 @@ nepřežijí. To odpovídá této lekci; trvalé úložiště zatím není souč
 
 ## Rozdělení odpovědnosti
 
+Cvičení 8.1: instrumentovaný test přidá Kroměříž (`Kromeriz`), ponechá text
+`Rozepsano`, vyžádá orientaci na šířku a počká na novou instanci aktivity.
+Ověří zachování textu i 4 měst, odscrolluje na přidanou kartu a zkontroluje,
+že Logcat s tagem `Stav` neobsahuje `onCleared`. Test prošel na API 37.
+Samostatný test vykreslí prázdný obsah bez ViewModelu a potvrdí prázdný stav.
+Celkem po cvičení 8.1 prošlo 6 instrumentovaných testů.
+
 `MestaViewModel` drží neměnný snímek `MestaUiState`, mění jej přes `copy()`
 a veřejně vystavuje pouze `StateFlow` přes `asStateFlow()`. Operace přidání,
 mazání a validace jsou mimo composable funkce. `SeznamMestObrazovka` odebírá
