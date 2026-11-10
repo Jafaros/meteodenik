@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -44,6 +45,8 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import cz.utb.meteodenik.R
 import cz.utb.meteodenik.model.Mesto
 import cz.utb.meteodenik.ui.theme.MeteoDenikTheme
@@ -59,6 +62,7 @@ fun MestaObrazovka(modifier: Modifier = Modifier) {
     // Jediné místo se stavem. Seznam zatím nepřežije rotaci; v lekci 08 jej převezme ViewModel.
     var novyNazev by rememberSaveable { mutableStateOf("") }
     var mesta by remember { mutableStateOf(ukazkovaMesta) }
+    var zobrazitVizitku by rememberSaveable { mutableStateOf(false) }
 
     MestaObsah(
         mesta = mesta,
@@ -71,8 +75,22 @@ fun MestaObrazovka(modifier: Modifier = Modifier) {
                 novyNazev = ""
             }
         },
-        modifier = modifier
+        modifier = modifier,
+        onZobrazitVizitku = { zobrazitVizitku = true }
     )
+    if (zobrazitVizitku) {
+        Dialog(
+            onDismissRequest = { zobrazitVizitku = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            VizitkaKarta(
+                jmeno = stringResource(R.string.vizitka_jmeno),
+                obor = stringResource(R.string.vizitka_obor),
+                email = stringResource(R.string.vizitka_email),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -82,13 +100,19 @@ fun MestaObsah(
     novyNazev: String,
     onNovyNazevChange: (String) -> Unit,
     onPridatMesto: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onZobrazitVizitku: () -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.mesta_titulek)) },
+                actions = {
+                    TextButton(onClick = onZobrazitVizitku) {
+                        Text(stringResource(R.string.vizitka_otevrit))
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
