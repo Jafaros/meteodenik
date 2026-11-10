@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MeteoDenik</string>
+    <string name="uvodni_text">Weather diary — Petr Grajciar</string>
+    <string name="text_po_kliknuti">Today was clear with a temperature of 21 °C.</string>
+    <string name="akce_zmen_text">Record today’s weather</string>
+    <string name="mesta_titulek">My cities</string>
+    <string name="mesta_prazdno">No cities yet. Add the first one.</string>
+    <string name="mesto_pole_label">City name</string>
+    <string name="mesto_pridat">Add</string>
+    <string name="mesto_teplota">%1$.1f °C</string>
+    <string name="mesto_teplota_neznama">Temperature not known yet</string>
+    <string name="mesto_avatar_popis">City badge for %1$s</string>
+</resources>
